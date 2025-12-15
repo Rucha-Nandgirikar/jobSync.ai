@@ -1,0 +1,96 @@
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: job_scout_db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: job_scout_ai
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./backend/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 5
+    networks:
+      - job_scout_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: job_scout_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - job_scout_network
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: job_scout_backend
+    environment:
+      DATABASE_URL: mysql+pymysql://root:password@db:3306/job_scout_ai
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-5.1}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-your-secret-key-change-in-production}
+      DEBUG: "False"
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - job_scout_network
+
+  # One-shot DB seeding (runs on startup; safe/idempotent)
+  seed:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: job_scout_seed
+    environment:
+      DATABASE_URL: mysql+pymysql://root:password@db:3306/job_scout_ai
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["python", "scripts/bootstrap_db.py", "--data-dir", "/app/data", "--timeout", "120"]
+    restart: "no"
+    networks:
+      - job_scout_network
+
+  # Next.js Frontend (development)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: job_scout_frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules  # Preserve node_modules from image
+      - /app/.next  # Preserve Next.js build cache
+    depends_on:
+      - backend
+    networks:
+      - job_scout_network
+
+volumes:
+  db_data:
+
+networks:
+  job_scout_network:
+    driver: bridge

@@ -1,0 +1,55 @@
+# ---------- OS / Editor ----------
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+.idea/
+.vscode/
+
+# ---------- Secrets / local env ----------
+.env
+.env.*
+!.env.example
+
+# ---------- Python ----------
+**/__pycache__/
+**/*.py[cod]
+**/*.pyd
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.coverage
+**/coverage.xml
+
+# Local virtualenvs
+backend/venv/
+venv/
+.venv/
+
+# ---------- Node / Next.js ----------
+**/node_modules/
+frontend/.next/
+frontend/out/
+frontend/dist/
+frontend/.turbo/
+frontend/.cache/
+
+# ---------- Logs ----------
+**/*.log
+
+# ---------- Generated app data (personal / runtime artifacts) ----------
+# Ignore the entire local runtime data directory (resumes, vector stores, logs, exports, cover letters, seed lists, etc.)
+data/
+
+# Backend writes some local runtime data too
+backend/data/
+
+# ---------- Chrome extension build artifacts ----------
+chrome-extension/*.zip
+chrome-extension/*.crx
+
+# If you re-add local icon generator scripts, keep them ignored
+chrome-extension/icons/*.ps1
+chrome-extension/icons/*.py
+
+

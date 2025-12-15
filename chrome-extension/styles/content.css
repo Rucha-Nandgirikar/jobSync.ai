@@ -1,0 +1,10 @@
+/* Content script styles - can be used to highlight detected elements */
+
+.jobsync-highlight {
+    border: 2px solid #2563eb !important;
+    background: rgba(37, 99, 235, 0.1) !important;
+}
+
+
+
+

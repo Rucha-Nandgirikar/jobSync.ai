@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rapid Apply</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        margin: 0;
+        min-width: 0;
+        font-size: 12px;
+        color: #111827;
+        background: #ffffff;
+        overflow-x: hidden;
+      }
+      h1 {
+        font-size: 16px;
+        margin: 0 0 6px;
+      }
+      h2 {
+        font-size: 13px;
+        margin: 10px 0 4px;
+        font-weight: 600;
+      }
+      label {
+        display: block;
+        font-size: 11px;
+        margin-bottom: 3px;
+        color: #4b5563;
+      }
+      input,
+      textarea {
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 4px;
+        border: 1px solid #d1d5db;
+        font-size: 11px;
+        padding: 4px 6px;
+        font-family: inherit;
+      }
+      textarea {
+        resize: vertical;
+        min-height: 48px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 10px;
+        font-size: 11px;
+        border-radius: 4px;
+        border: 1px solid #2563eb;
+        background: #2563eb;
+        color: #ffffff;
+        cursor: pointer;
+      }
+      .btn.secondary {
+        border-color: #6b7280;
+        background: #ffffff;
+        color: #111827;
+      }
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+      #status {
+        font-size: 11px;
+        margin-bottom: 6px;
+        color: #4b5563;
+      }
+      #job-meta {
+        font-size: 11px;
+        color: #374151;
+        margin-bottom: 4px;
+      }
+      #preview {
+        margin-top: 4px;
+        max-height: 120px;
+        overflow: auto;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        padding: 6px;
+        font-size: 11px;
+        white-space: pre-wrap;
+      }
+      .section {
+        margin-top: 8px;
+        padding-top: 6px;
+        border-top: 1px solid #e5e7eb;
+      }
+      .output {
+        margin-top: 4px;
+        max-height: 220px;
+        overflow: auto;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        padding: 6px;
+        font-size: 11px;
+        white-space: pre-wrap;
+      }
+      .row {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: stretch;
+        margin-bottom: 4px;
+      }
+      .row input {
+        flex: 1;
+      }
+      .row select {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      /* Side panel layout: scrollable main + sticky composer (Cursor-like) */
+      .app {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .header {
+        padding: 10px 10px 6px 10px;
+        border-bottom: 1px solid #e5e7eb;
+        background: #ffffff;
+      }
+      .header-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .header-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        flex-shrink: 0;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: #374151;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        border-radius: 999px;
+        padding: 4px 8px;
+        white-space: nowrap;
+      }
+      .btn.header-btn {
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        line-height: 1;
+        white-space: nowrap;
+      }
+      .main {
+        flex: 1;
+        overflow: auto;
+        padding: 10px;
+      }
+      .composer {
+        position: sticky;
+        bottom: 0;
+        border-top: 1px solid #e5e7eb;
+        background: #ffffff;
+        padding: 8px 10px 10px 10px;
+      }
+      .composer-row {
+        display: flex;
+        gap: 8px;
+        align-items: flex-end;
+      }
+      .composer-row textarea {
+        flex: 1;
+        min-width: 0;
+      }
+      #suggestions-input {
+        min-height: 42px;
+        max-height: 90px;
+        resize: vertical;
+      }
+      .hint {
+        margin-top: 6px;
+        font-size: 11px;
+        color: #6b7280;
+      }
+
+      /* Chat feed */
+      .chat {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .msg {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 8px 10px;
+        background: #f9fafb;
+        white-space: pre-wrap;
+        line-height: 1.35;
+      }
+      .msg.user {
+        background: #eff6ff;
+        border-color: #bfdbfe;
+      }
+      .msg.assistant {
+        background: #f9fafb;
+        border-color: #e5e7eb;
+      }
+      .msg .meta {
+        font-size: 11px;
+        color: #6b7280;
+        margin-bottom: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <div class="header">
+        <div class="header-row">
+          <h1>Rapid Apply</h1>
+          <div class="header-actions">
+            <span class="pill" id="today-count">Today submitted: 0</span>
+            <button
+              id="mark-submitted"
+              class="btn header-btn secondary"
+              disabled
+              title="Mark this application as submitted (clears panel)"
+            >
+              Mark submitted
+            </button>
+          </div>
+        </div>
+        <p id="status">
+          Open an Ashby job page and click “Capture JD”.
+        </p>
+      </div>
+
+      <div class="main">
+        <div class="section" style="border-top: 0; padding-top: 0; margin-top: 0;">
+          <h2>Chat</h2>
+          <div id="chat" class="chat"></div>
+        </div>
+
+        <div class="section" style="border-top: 0; padding-top: 0; margin-top: 0;">
+          <h2>Capture</h2>
+          <div id="job-meta">No job captured yet.</div>
+          <button id="capture" class="btn">Capture JD</button>
+          <pre id="preview"></pre>
+        </div>
+
+        <div class="section">
+          <h2>Resume & cover letter</h2>
+          <div class="row">
+            <label for="resume-select">Resume</label>
+            <select id="resume-select" title="Pick which resume to use"></select>
+          </div>
+          <button id="generate-cover-letter" class="btn" style="margin-top: 2px;">
+            Generate cover letter
+          </button>
+          <div id="cover-letter-output" class="output" style="display:none;"></div>
+        </div>
+
+        <div class="section">
+          <h2>Questions</h2>
+          <label for="questions-input">
+            Questions (one per line)
+          </label>
+          <textarea
+            id="questions-input"
+            placeholder="Questions will auto-fill from the Ashby Application tab when possible."
+          ></textarea>
+
+          <div id="answers-output" class="output" style="margin-top: 10px;"></div>
+        </div>
+      </div>
+
+      <!-- Cursor-like composer pinned to bottom -->
+      <div class="composer">
+        <label for="suggestions-input" style="margin: 0 0 6px 0;">
+          Suggestions (optional)
+        </label>
+        <div class="composer-row">
+          <textarea
+            id="suggestions-input"
+            placeholder="e.g., Mention my FAISS + Redis caching project; keep it 2–3 sentences."
+          ></textarea>
+          <button id="answer-questions" class="btn" style="white-space: nowrap;">
+            Generate
+          </button>
+        </div>
+        <div class="hint">Tip: Open the “Application” tab on Ashby so questions can be captured from the form.</div>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

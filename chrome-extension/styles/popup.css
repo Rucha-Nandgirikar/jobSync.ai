@@ -1,0 +1,235 @@
+/* Popup Styles for JobSync AI Extension */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 400px;
+    min-height: 500px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 14px;
+    color: #333;
+    background: #f5f5f5;
+}
+
+.container {
+    padding: 16px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+header h1 {
+    font-size: 24px;
+    color: #2563eb;
+    margin-bottom: 4px;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: #666;
+}
+
+.status-message {
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    display: none;
+}
+
+.status-message.success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.status-message.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+.status-message.info {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #3b82f6;
+}
+
+.section {
+    background: white;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.section h2 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: #1f2937;
+}
+
+.section h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #374151;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.job-details p {
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.question-item {
+    padding: 12px;
+    margin-bottom: 8px;
+    background: #f9fafb;
+    border-radius: 4px;
+    border-left: 3px solid #2563eb;
+}
+
+.question-item p {
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.suggestions-toggle {
+    margin-bottom: 12px;
+}
+
+.suggestions-toggle label {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.suggestions-toggle input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+#suggestionsInput {
+    margin-bottom: 12px;
+}
+
+#suggestionsInput textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+#suggestionsInput small {
+    display: block;
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 11px;
+}
+
+.btn-primary, .btn-secondary, .btn-success, .btn-small {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: white;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.btn-primary:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: #374151;
+    margin-right: 8px;
+}
+
+.btn-secondary:hover {
+    background: #d1d5db;
+}
+
+.btn-success {
+    background: #10b981;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #059669;
+}
+
+.btn-small {
+    padding: 4px 8px;
+    font-size: 11px;
+    background: #2563eb;
+    color: white;
+}
+
+.answer-content {
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 4px;
+    border-left: 3px solid #10b981;
+    margin-bottom: 12px;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.answer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.answer-actions button {
+    flex: 1;
+    min-width: 80px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+
+
+
