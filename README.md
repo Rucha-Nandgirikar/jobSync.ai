@@ -1,4 +1,4 @@
-# JobSync.ai
+# JobSync.ai (Rapid Apply + Job Sync)
 
 JobSync.ai is a job discovery + application tracking stack:
 
